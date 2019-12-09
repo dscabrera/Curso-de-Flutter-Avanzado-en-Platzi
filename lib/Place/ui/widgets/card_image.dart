@@ -1,29 +1,46 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'floating_action_button_green.dart';
+import 'package:platzi_trips_app/widgets/floating_action_button_green.dart';
 
-class  CardImage extends StatelessWidget {
+class  CardImageWithFabIcon extends StatelessWidget {
 
-  String pathImage = "assets/img/beach.jpeg";
+  final double height;
+  final double width;
+  double left;
+  final String pathImage;
+  final VoidCallback onPressedFabIcon;
+  final IconData iconData;
+  bool internet = true;
 
-  CardImage(this.pathImage);
+
+  CardImageWithFabIcon({
+    Key key,
+    @required this.pathImage,
+    @required this.width,
+    @required this.height,
+    @required this.onPressedFabIcon,
+    @required this.iconData,
+    this.internet,
+    this.left
+
+  });
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
 
+    /*
     final card = Container(
-      height: 350.0,
-      width: 250.0,
+      height: height,
+      width: width,
       margin: EdgeInsets.only(
-        top: 80.0,
-        left: 20.0
-
+        left: left
       ),
 
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-            image: AssetImage(pathImage)
+            image: NetworkImage(pathImage)
         ),
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         shape: BoxShape.rectangle,
@@ -38,11 +55,23 @@ class  CardImage extends StatelessWidget {
       ),
     );
 
+     */
+    final card = Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: internet?CachedNetworkImageProvider(pathImage):AssetImage(pathImage)
+        ),
+      ),
+    );
+
     return Stack(
       alignment: Alignment(0.9,1.1),
       children: <Widget>[
         card,
-        FloatingActionButtonGreen()
+        FloatingActionButtonGreen(
+          iconData: iconData,
+          onPressed: onPressedFabIcon,
+        )
       ],
     );
   }
